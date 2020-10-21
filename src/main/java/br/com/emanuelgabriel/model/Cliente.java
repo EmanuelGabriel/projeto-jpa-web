@@ -38,7 +38,10 @@ public class Cliente implements Serializable {
 	private TipoPessoa tipo;
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<Endereco>();
+	private List<Endereco> enderecos = new ArrayList<>();
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Telefone> telefones = new ArrayList<>();
 
 	public Cliente() {
 	}
@@ -88,6 +91,14 @@ public class Cliente implements Serializable {
 
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
+	}
+
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
 	}
 
 	@Override

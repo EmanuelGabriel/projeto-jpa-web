@@ -57,7 +57,7 @@ public class TestPalestra {
 	@Test
 	public void buscarPorCodigo() {
 
-		Palestra palestra = this.palestraRepository.findByCodigo(2L);
+		Palestra palestra = this.palestraRepository.findByCodigo(3L);
 		if (palestra != null) {
 			System.out.println(palestra);
 		} else {

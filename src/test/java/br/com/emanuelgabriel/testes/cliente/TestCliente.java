@@ -6,18 +6,24 @@ import org.junit.Test;
 
 import br.com.emanuelgabriel.model.Cliente;
 import br.com.emanuelgabriel.model.Endereco;
+import br.com.emanuelgabriel.model.Telefone;
 import br.com.emanuelgabriel.model.enums.TipoPessoa;
+import br.com.emanuelgabriel.model.enums.TipoTelefone;
+import br.com.emanuelgabriel.repository.TelefoneRepository;
 import br.com.emanuelgabriel.service.ClienteServiceImpl;
+import br.com.emanuelgabriel.service.TelefoneServiceImpl;
 
 public class TestCliente {
 
 	private static final String CLIENTE_NAO_ENCONTRADO = "Cliente não encontrado";
 	private static final String NENHUM_REGISTRO_ENCONTRADAO = "Nenhum registro encontrado...";
-	
+
 	private ClienteServiceImpl clienteRepository;
+	private TelefoneRepository telefoneRepository;
 
 	public TestCliente() {
 		this.clienteRepository = new ClienteServiceImpl();
+		this.telefoneRepository = new TelefoneServiceImpl();
 	}
 
 	@Test
@@ -223,6 +229,20 @@ public class TestCliente {
 			System.out.println("Tipo: " + cliente.getTipo());
 			System.out.println("---------------------------");
 		}
+
+	}
+
+	@Test
+	public void cadastrarTelefoneCliente() {
+
+		Cliente cliente = this.clienteRepository.findByCodigo(3L);
+
+		Telefone telefone = new Telefone();
+		telefone.setNumero("329012312");
+		telefone.setTipoTelefone(TipoTelefone.FIXO);
+		telefone.setCliente(cliente);
+
+		this.telefoneRepository.criar(telefone);
 
 	}
 
