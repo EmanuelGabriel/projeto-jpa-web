@@ -20,4 +20,6 @@ public interface ClienteRepository extends GenericService<Cliente> {
 
 	List<Cliente> buscarPorTipo(TipoPessoa tipoPessoa);
 
+	Long quantidadeClientes();
+
 }

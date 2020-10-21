@@ -149,4 +149,19 @@ public class ClienteServiceImpl implements ClienteRepository {
 		return cliente;
 	}
 
+	@Override
+	public Long quantidadeClientes() {
+		try {
+
+			entityManager.getTransaction().begin();
+			Long qtdClientes = (Long) entityManager.createQuery("SELECT count(*) FROM Cliente c").getSingleResult();
+			entityManager.getTransaction().commit();
+			return qtdClientes;
+
+		} catch (NoResultException | NonUniqueResultException e) {
+			return null;
+		}
+
+	}
+
 }

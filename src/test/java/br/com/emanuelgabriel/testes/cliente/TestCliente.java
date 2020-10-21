@@ -30,17 +30,17 @@ public class TestCliente {
 	public void criar() {
 
 		Cliente cliente = new Cliente();
-		cliente.setNome("Carlos Eduardo Martins");
-		cliente.setEmail("carlitoedu@gmail.com");
+		cliente.setNome("João da Silva Rocha");
+		cliente.setEmail("joaorocha@hotmail.com");
 		cliente.setTipo(TipoPessoa.FISICA);
 
 		Endereco endereco = new Endereco();
-		endereco.setLogradouro("Rua das Hortas Cesar Leitão");
-		endereco.setNumero(9882);
-		endereco.setCep("6400467");
-		endereco.setRua("Rua Treze de Maio");
-		endereco.setCidade("Portos");
-		endereco.setEstado("Acre");
+		endereco.setLogradouro("Rua Leandro Nogueira");
+		endereco.setNumero(1008);
+		endereco.setCep("640058912");
+		endereco.setRua("Rua 24 de Janeiro de 2002");
+		endereco.setCidade("São Luis");
+		endereco.setEstado("Maranhão");
 		endereco.setCliente(cliente);
 
 		cliente.getEnderecos().add(endereco);
@@ -77,7 +77,7 @@ public class TestCliente {
 	@Test
 	public void remover() {
 
-		Long codigo = 27L;
+		Long codigo = 5L;
 		Cliente cliente = clienteRepository.findByCodigo(codigo);
 		if (cliente != null) {
 			clienteRepository.remover(cliente);
@@ -90,7 +90,7 @@ public class TestCliente {
 	@Test
 	public void buscarPorNome() {
 
-		String nome = "dro";
+		String nome = "roc";
 		Cliente cliente = clienteRepository.findByNome(nome);
 		if (cliente != null) {
 			System.out.println(cliente);
@@ -117,7 +117,7 @@ public class TestCliente {
 	@Test
 	public void atualizar() {
 
-		Cliente cliente = clienteRepository.findByCodigo(1L);
+		Cliente cliente = clienteRepository.findByCodigo(5L);
 		if (cliente != null) {
 			cliente.setNome("Augusto Sandro Pinto");
 			cliente.setEmail("augustosandro@yahoo.com.br");
@@ -207,11 +207,11 @@ public class TestCliente {
 	@Test
 	public void cadastrarTelefoneCliente() {
 
-		Cliente cliente = this.clienteRepository.findByCodigo(2L);
+		Cliente cliente = this.clienteRepository.findByCodigo(5L);
 
 		Telefone telefone = new Telefone();
-		telefone.setNumero("8932895612");
-		telefone.setTipoTelefone(TipoTelefone.RESIDENCIAL);
+		telefone.setNumero("879889237623");
+		telefone.setTipoTelefone(TipoTelefone.CELULAR);
 		telefone.setCliente(cliente);
 
 		this.telefoneRepository.criar(telefone);
@@ -221,7 +221,7 @@ public class TestCliente {
 	@Test
 	public void consultarTelefoneCliente() {
 
-		Cliente cliente = this.clienteRepository.findByCodigo(2L);
+		Cliente cliente = this.clienteRepository.findByCodigo(5L);
 
 		if (cliente != null) {
 			for (Telefone telefone : cliente.getTelefones()) {
@@ -232,6 +232,12 @@ public class TestCliente {
 			System.out.println(CLIENTE_NAO_ENCONTRADO);
 		}
 
+	}
+
+	@Test
+	public void somarQuantidadeClientes() {
+		Long qtdCliente = this.clienteRepository.quantidadeClientes();
+		System.out.println("Quantidade de clientes cadastrados: " + qtdCliente);
 	}
 
 }
