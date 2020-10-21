@@ -128,8 +128,20 @@ public class Cliente implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Cliente [codigo=" + codigo + ", nome=" + nome + ", email=" + email + ", tipo=" + tipo + ", enderecos="
-				+ enderecos + "]";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("\nCliente: ");
+		sb.append("\nCód.: ");
+		sb.append(this.codigo);
+		sb.append("\nNome: ");
+		sb.append(this.nome);
+		sb.append("\nE-mail: ");
+		sb.append(this.email);
+		sb.append("\nTipo/Pessoa: ");
+		sb.append(this.tipo);
+
+		return sb.toString();
+
 	}
 
 }

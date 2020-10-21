@@ -57,12 +57,7 @@ public class TestCliente {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println("Cód: " + cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
-			System.out.println("\n---------------");
-
+			System.out.println(cliente);
 		}
 	}
 
@@ -72,10 +67,7 @@ public class TestCliente {
 		Long codigo = 1L;
 		Cliente cliente = clienteRepository.findByCodigo(codigo);
 		if (cliente != null) {
-			System.out.println("Cód: " + cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
+			System.out.println(cliente);
 		} else {
 			System.out.println(CLIENTE_NAO_ENCONTRADO);
 		}
@@ -101,10 +93,7 @@ public class TestCliente {
 		String nome = "dro";
 		Cliente cliente = clienteRepository.findByNome(nome);
 		if (cliente != null) {
-			System.out.println("Cód: " + cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
+			System.out.println(cliente);
 		} else {
 			System.out.println(CLIENTE_NAO_ENCONTRADO);
 		}
@@ -113,18 +102,14 @@ public class TestCliente {
 	@Test
 	public void buscarPorNomes() {
 
-		String nome = "carl";
+		String nome = "lito";
 		List<Cliente> clientes = clienteRepository.buscarPorNomes(nome);
 		if (clientes.isEmpty()) {
 			System.out.println(CLIENTE_NAO_ENCONTRADO);
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
-
+			System.out.println(cliente);
 		}
 
 	}
@@ -132,10 +117,10 @@ public class TestCliente {
 	@Test
 	public void atualizar() {
 
-		Cliente cliente = clienteRepository.findByCodigo(11L);
+		Cliente cliente = clienteRepository.findByCodigo(1L);
 		if (cliente != null) {
-			cliente.setNome("Carlos do Nascimento Alves");
-			cliente.setEmail("carlosnascimento@gmail.com");
+			cliente.setNome("Augusto Sandro Pinto");
+			cliente.setEmail("augustosandro@yahoo.com.br");
 			cliente.setTipo(TipoPessoa.JURIDICA);
 
 			clienteRepository.criar(cliente);
@@ -154,10 +139,7 @@ public class TestCliente {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
+			System.out.println(cliente);
 		}
 
 	}
@@ -171,10 +153,7 @@ public class TestCliente {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
+			System.out.println(cliente);
 		}
 
 	}
@@ -191,10 +170,7 @@ public class TestCliente {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente.getCodigo());
-			System.out.println(cliente.getNome());
-			System.out.println(cliente.getEmail());
-			System.out.println(cliente.getTipo());
+			System.out.println(cliente);
 		}
 
 	}
@@ -202,12 +178,11 @@ public class TestCliente {
 	@Test
 	public void buscarClientePorEmail() {
 
-		String email = "carlosnascimento@gmail.com.br";
+		String email = "carlosnascimento@gmail.com";
 
 		Cliente cliente = clienteRepository.findByEmail(email);
 		if (cliente != null) {
-			System.out.println("Cód: " + cliente.getCodigo());
-			System.out.println("E-mail: " + cliente.getEmail());
+			System.out.println(cliente);
 
 		} else {
 			System.out.println(CLIENTE_NAO_ENCONTRADO);
@@ -224,10 +199,7 @@ public class TestCliente {
 		}
 
 		for (Cliente cliente : clientes) {
-			System.out.println("Cód." + cliente.getCodigo());
-			System.out.println("Nome: " + cliente.getNome());
-			System.out.println("Tipo: " + cliente.getTipo());
-			System.out.println("---------------------------");
+			System.out.println(cliente);
 		}
 
 	}
@@ -235,14 +207,30 @@ public class TestCliente {
 	@Test
 	public void cadastrarTelefoneCliente() {
 
-		Cliente cliente = this.clienteRepository.findByCodigo(3L);
+		Cliente cliente = this.clienteRepository.findByCodigo(2L);
 
 		Telefone telefone = new Telefone();
-		telefone.setNumero("329012312");
-		telefone.setTipoTelefone(TipoTelefone.FIXO);
+		telefone.setNumero("8932895612");
+		telefone.setTipoTelefone(TipoTelefone.RESIDENCIAL);
 		telefone.setCliente(cliente);
 
 		this.telefoneRepository.criar(telefone);
+
+	}
+
+	@Test
+	public void consultarTelefoneCliente() {
+
+		Cliente cliente = this.clienteRepository.findByCodigo(2L);
+
+		if (cliente != null) {
+			for (Telefone telefone : cliente.getTelefones()) {
+				System.out.println(telefone);
+
+			}
+		} else {
+			System.out.println(CLIENTE_NAO_ENCONTRADO);
+		}
 
 	}
 

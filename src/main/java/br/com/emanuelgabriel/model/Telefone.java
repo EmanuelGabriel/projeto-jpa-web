@@ -102,8 +102,19 @@ public class Telefone implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Telefone [codigo=" + codigo + ", tipoTelefone=" + tipoTelefone + ", numero=" + numero + ", cliente="
-				+ cliente + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("\nTelefone: ");
+		sb.append("\nCód.: ");
+		sb.append(this.codigo);
+		sb.append("\nTipo/Telefone: ");
+		sb.append(this.tipoTelefone);
+		sb.append("\nNúmero: ");
+		sb.append(this.numero);
+		sb.append("\nCliente: ");
+		sb.append(this.getCliente().getNome());
+
+		return sb.toString();
+
 	}
 
 }
