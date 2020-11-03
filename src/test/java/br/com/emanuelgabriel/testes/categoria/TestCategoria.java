@@ -35,11 +35,8 @@ public class TestCategoria {
 		Long codigo = 4L;
 		Categoria categoria = categoriaRepository.findByCodigo(codigo);
 		if (categoria != null) {
-			System.out.println("Cód. " + categoria.getCodigo());
-			System.out.println("Nome: " + categoria.getNome());
-			System.out.println("CategoriaPai: " + categoria.getCategoriaPai().getNome());
-			System.out.println("Descrição: " + categoria.getDescricao());
 
+			System.out.println(categoria);
 		} else {
 			System.out.println(CATEGORIA_NAO_ENCONTRADO);
 		}

@@ -161,8 +161,8 @@ public class TestCliente {
 	@Test
 	public void buscarClientePorNomeOuEmail() {
 
-		String nome = "Carlos do Nascimento Alves";
-		String email = "c@hotmail.com.br";
+		String nome = "Carlos";
+		String email = "carlitobezerra@hotmail.com";
 
 		List<Cliente> clientes = clienteRepository.buscarPorNomeAndEmail(nome, email);
 		if (clientes.isEmpty()) {
@@ -178,7 +178,7 @@ public class TestCliente {
 	@Test
 	public void buscarClientePorEmail() {
 
-		String email = "carlosnascimento@gmail.com";
+		String email = "carlitobezerra@hotmail.com";
 
 		Cliente cliente = clienteRepository.findByEmail(email);
 		if (cliente != null) {

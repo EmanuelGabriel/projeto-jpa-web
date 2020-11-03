@@ -48,12 +48,7 @@ public class TestProduto {
 		}
 
 		for (Produto prod : produtos) {
-			System.out.println("Cód. " + prod.getCodigo());
-			System.out.println("Nome: " + prod.getNome());
-			System.out.println("Categoria: " + prod.getCategoria().getNome());
-			System.out.println("Qtd Estoque: " + prod.getQuantidadeEstoque());
-			System.out.println("Valor Unit: " + prod.getValorUnitario());
-			System.out.println("\n--------------------------------");
+			System.out.println(prod);
 		}
 
 	}
@@ -64,11 +59,7 @@ public class TestProduto {
 		Long codigo = 3L;
 		Produto produto = produtoRepository.findByCodigo(codigo);
 		if (produto != null) {
-			System.out.println("Cód. " + produto.getCodigo());
-			System.out.println("Nome: " + produto.getNome());
-			System.out.println("Categoria: " + produto.getCategoria().getNome());
-			System.out.println("Qtd Estoque: " + produto.getQuantidadeEstoque());
-			System.out.println("Valor Unit: " + produto.getValorUnitario());
+			System.out.println(produto);
 
 		} else {
 			System.out.println(PRODUTO_NAO_ENCONTRADO);
@@ -79,17 +70,14 @@ public class TestProduto {
 	@Test
 	public void buscarPorNomes() {
 
-		String nomeProduto = "so";
+		String nomeProduto = "not";
 		List<Produto> listaProdutosNome = produtoRepository.findPorNome(nomeProduto);
 		if (listaProdutosNome.isEmpty()) {
 			System.out.println(NENHUM_REGISTRO_ENCONTRADAO);
 		}
 
 		for (Produto prod : listaProdutosNome) {
-			System.out.println("Cód.: " + prod.getCodigo());
-			System.out.println("Nome: " + prod.getNome());
-			System.out.println("Categoria: " + prod.getCategoria().getNome());
-			System.out.println("------------------\n");
+			System.out.println(prod);
 		}
 
 	}

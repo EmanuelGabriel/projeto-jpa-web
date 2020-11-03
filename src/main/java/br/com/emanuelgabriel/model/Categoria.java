@@ -115,7 +115,15 @@ public class Categoria implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Categoria [codigo=" + codigo + ", nome=" + nome + ", descricao=" + descricao + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Categoria");
+		sb.append("\nCód.: ");
+		sb.append(this.codigo);
+		sb.append("\nNome: ");
+		sb.append(this.nome);
+		sb.append("\nDescriação: ");
+		sb.append(this.descricao);
+		return sb.toString();
 	}
 
 }

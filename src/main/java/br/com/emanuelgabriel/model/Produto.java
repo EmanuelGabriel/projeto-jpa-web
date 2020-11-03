@@ -122,8 +122,21 @@ public class Produto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Produto [codigo=" + codigo + ", nome=" + nome + ", quantidadeEstoque=" + quantidadeEstoque
-				+ ", valorUnitario=" + valorUnitario + ", categoria=" + categoria + "]";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("Produto");
+		sb.append("\nCód.: ");
+		sb.append(this.codigo);
+		sb.append("\nNome: ");
+		sb.append(this.nome);
+		sb.append("\nQuantidade/Estoque: ");
+		sb.append(this.quantidadeEstoque);
+		sb.append("\nValor Unitário: ");
+		sb.append(this.valorUnitario);
+		sb.append("\nCategoria: ");
+		sb.append(this.categoria.getNome());
+		return sb.toString();
+
 	}
 
 }
