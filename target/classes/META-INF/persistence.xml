@@ -16,6 +16,8 @@
 		<class>br.com.emanuelgabriel.model.Local</class>
 		<class>br.com.emanuelgabriel.model.Palestra</class>
 		<class>br.com.emanuelgabriel.model.Telefone</class>
+		<class>br.com.emanuelgabriel.model.ModeloCarro</class>
+		<class>br.com.emanuelgabriel.model.Fabricante</class>
 
 
 	   <properties>
