@@ -18,6 +18,7 @@
 		<class>br.com.emanuelgabriel.model.Telefone</class>
 		<class>br.com.emanuelgabriel.model.ModeloCarro</class>
 		<class>br.com.emanuelgabriel.model.Fabricante</class>
+		<class>br.com.emanuelgabriel.model.Acessorio</class>
 
 
 	   <properties>

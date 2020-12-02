@@ -6,15 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.emanuelgabriel.model.enums.TipoCategoria;
-
 @Entity
-@Table(name = "modelo_carro")
-public class ModeloCarro implements Serializable {
+@Table(name = "acessorio")
+public class Acessorio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,16 +19,10 @@ public class ModeloCarro implements Serializable {
 	private Long codigo;
 	private String descricao;
 
-	@ManyToOne
-	@JoinColumn(name = "codigo_fabricante")
-	private Fabricante fabricante;
-
-	private TipoCategoria tipo;
-
-	public ModeloCarro() {
+	public Acessorio() {
 	}
 
-	public ModeloCarro(String descricao) {
+	public Acessorio(String descricao) {
 		this.descricao = descricao;
 	}
 
@@ -52,22 +42,6 @@ public class ModeloCarro implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Fabricante getFabricante() {
-		return fabricante;
-	}
-
-	public void setFabricante(Fabricante fabricante) {
-		this.fabricante = fabricante;
-	}
-
-	public TipoCategoria getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoCategoria tipo) {
-		this.tipo = tipo;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,7 +58,7 @@ public class ModeloCarro implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ModeloCarro other = (ModeloCarro) obj;
+		Acessorio other = (Acessorio) obj;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
@@ -95,8 +69,7 @@ public class ModeloCarro implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ModeloCarro [codigo=" + codigo + ", descricao=" + descricao + ", fabricante=" + fabricante + ", tipo="
-				+ tipo + "]";
+		return "Acessorio [codigo=" + codigo + ", descricao=" + descricao + "]";
 	}
 
 }
