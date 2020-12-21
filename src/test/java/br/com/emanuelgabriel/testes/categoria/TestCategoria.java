@@ -44,7 +44,7 @@ public class TestCategoria {
 	}
 
 	@Test
-	public void listarCategoria() {
+	public void getCategorias() {
 
 		List<Categoria> categorias = categoriaRepository.findAll();
 		if (categorias.isEmpty()) {
@@ -52,8 +52,7 @@ public class TestCategoria {
 		}
 
 		for (Categoria cat : categorias) {
-			System.out.println(cat.getCodigo());
-			System.out.println(cat.getNome());
+			System.out.println(cat);
 		}
 
 	}

@@ -37,16 +37,6 @@ public class PalestraServiceImpl implements PalestraRepository {
 		return lista;
 	}
 
-	@Transactional
-	@Override
-	public Palestra update(Palestra palestra) {
-		entityManager.getTransaction().begin();
-		Palestra updatePalestra = findByCodigo(palestra.getCodigo());
-		entityManager.merge(updatePalestra);
-		entityManager.getTransaction().commit();
-		return updatePalestra;
-	}
-
 	@Override
 	public Palestra findByCodigo(Long codigo) {
 		return entityManager.find(Palestra.class, codigo);

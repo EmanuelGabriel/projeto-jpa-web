@@ -50,12 +50,6 @@ public class ProdutoServiceImpl implements ProdutoRepository {
 
 	@Transactional
 	@Override
-	public Produto update(Produto t) {
-		return null;
-	}
-
-	@Transactional
-	@Override
 	public void remover(Produto produto) {
 		try {
 

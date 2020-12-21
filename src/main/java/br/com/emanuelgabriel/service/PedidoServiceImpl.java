@@ -42,12 +42,6 @@ public class PedidoServiceImpl implements PedidoRepository {
 		return lista;
 	}
 
-	@Transactional
-	@Override
-	public Pedido update(Pedido obj) {
-		return null;
-	}
-
 	@Override
 	public Pedido findByCodigo(Long codigo) {
 		return this.entityManager.find(Pedido.class, codigo);

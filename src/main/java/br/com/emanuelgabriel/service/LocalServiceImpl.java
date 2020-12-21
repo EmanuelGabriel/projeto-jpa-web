@@ -44,16 +44,6 @@ public class LocalServiceImpl implements LocalRepository {
 		return listaLocais;
 	}
 
-	@Transactional
-	@Override
-	public Local update(Local local) {
-		entityManager.getTransaction().begin();
-		Local localUpdate = findByCodigo(local.getCodigo());
-		entityManager.merge(localUpdate);
-		entityManager.getTransaction().commit();
-		return localUpdate;
-	}
-
 	@Override
 	public Local findByCodigo(Long codigo) {
 		return entityManager.find(Local.class, codigo);

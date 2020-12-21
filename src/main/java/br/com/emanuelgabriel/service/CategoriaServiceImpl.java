@@ -19,15 +19,18 @@ public class CategoriaServiceImpl implements CategoriaRepository {
 	private EntityManager entityManager;
 
 	public CategoriaServiceImpl() {
-		this.entityManager = HibernateUtil.getEntityManager();
+		entityManager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
 	public void criar(Categoria categoria) {
-
 		entityManager.getTransaction().begin();
-		entityManager.merge(categoria);
+		if (categoria.getCodigo() == null) {
+			entityManager.persist(categoria);
+		} else {
+			entityManager.merge(categoria);
+		}
 		entityManager.getTransaction().commit();
 
 	}
@@ -36,14 +39,9 @@ public class CategoriaServiceImpl implements CategoriaRepository {
 	public List<Categoria> findAll() {
 		entityManager.getTransaction().begin();
 		TypedQuery<Categoria> categoriaQuery = entityManager.createQuery("SELECT c FROM Categoria c", Categoria.class);
-		List<Categoria> lista = categoriaQuery.getResultList();
+		List<Categoria> categorias = categoriaQuery.getResultList();
 		entityManager.getTransaction().commit();
-		return lista;
-	}
-
-	@Override
-	public Categoria update(Categoria categoria) {
-		return null;
+		return categorias;
 	}
 
 	@Override
@@ -51,6 +49,7 @@ public class CategoriaServiceImpl implements CategoriaRepository {
 		return this.entityManager.find(Categoria.class, codigo);
 	}
 
+	@Transactional
 	@Override
 	public void remover(Categoria categoria) {
 
@@ -61,7 +60,7 @@ public class CategoriaServiceImpl implements CategoriaRepository {
 			entityManager.flush();
 
 		} catch (PersistenceException e) {
-			throw new RegraNegocioException("Categoria não pode ser excluído");
+			throw new RegraNegocioException("Categoria não pode ser excluída");
 		}
 	}
 

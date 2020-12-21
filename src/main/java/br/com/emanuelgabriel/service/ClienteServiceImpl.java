@@ -45,8 +45,7 @@ public class ClienteServiceImpl implements ClienteRepository {
 
 	@Override
 	public Cliente findByCodigo(Long codigo) {
-		Cliente cliente = entityManager.find(Cliente.class, codigo);
-		return cliente;
+		return entityManager.find(Cliente.class, codigo);
 	}
 
 	@Transactional
@@ -78,15 +77,6 @@ public class ClienteServiceImpl implements ClienteRepository {
 		List<Cliente> clientes = clientesQuery.getResultList();
 
 		return clientes;
-	}
-
-	@Transactional
-	@Override
-	public Cliente update(Cliente cliente) {
-		entityManager.getTransaction().begin();
-		Cliente updateCliente = entityManager.merge(cliente);
-		entityManager.getTransaction().commit();
-		return updateCliente;
 	}
 
 	@Override

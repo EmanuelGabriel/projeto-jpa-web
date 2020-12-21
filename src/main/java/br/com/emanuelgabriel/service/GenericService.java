@@ -9,8 +9,6 @@ public interface GenericService<T> extends Serializable {
 
 	List<T> findAll();
 
-	T update(T obj);
-
 	T findByCodigo(Long codigo);
 
 	void remover(T obj);

@@ -31,11 +31,6 @@ public class TelefoneServiceImpl implements TelefoneRepository {
 	}
 
 	@Override
-	public Telefone update(Telefone telefone) {
-		return null;
-	}
-
-	@Override
 	public Telefone findByCodigo(Long codigo) {
 		return null;
 	}

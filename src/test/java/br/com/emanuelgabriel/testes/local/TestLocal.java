@@ -77,7 +77,7 @@ public class TestLocal {
 			local.setPredio("Edifício Jarbas Castro Ltda");
 			local.setSala("7009");
 			local.setCapacidade(89);
-			this.localRepository.update(local);
+			this.localRepository.criar(local);
 		} else {
 			System.out.println(LOCAL_NAO_ENCONTRADO);
 		}

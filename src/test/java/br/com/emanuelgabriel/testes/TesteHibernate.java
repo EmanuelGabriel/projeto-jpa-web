@@ -11,6 +11,7 @@ public class TesteHibernate {
 	public void testeHibernate() {
 
 		HibernateUtil.getEntityManager();
+		
 
 	}
 
