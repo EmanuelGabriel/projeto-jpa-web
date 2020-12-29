@@ -1,6 +1,8 @@
 package br.com.emanuelgabriel.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.com.emanuelgabriel.model.enums.TipoCombustivel;
@@ -41,11 +44,27 @@ public class Veiculo implements Serializable {
 	@Column(name = "tipo_combustivel", length = 15, nullable = false)
 	private TipoCombustivel tipoCombustivel;
 
-	@ManyToOne
-	@JoinColumn(name = "id_proprietario")
-	private Proprietario proprietario;
+	// @ManyToOne
+	// @JoinColumn(name = "id_proprietario")
+	// private Proprietario proprietario;
+
+	@ManyToMany
+	@JoinTable(name = "veiculo_proprietario", 
+	joinColumns = @JoinColumn(name = "veiculo_id"), 
+	inverseJoinColumns = @JoinColumn(name = "proprietario_id"))
+	private List<Proprietario> proprietarios = new ArrayList<Proprietario>();
 
 	public Veiculo() {
+	}
+
+	public Veiculo(Long id, String fabricante, String modelo, Integer anoFabricacao, Integer anoModelo,
+			TipoCombustivel tipoCombustivel) {
+		this.id = id;
+		this.fabricante = fabricante;
+		this.modelo = modelo;
+		this.anoFabricacao = anoFabricacao;
+		this.anoModelo = anoModelo;
+		this.tipoCombustivel = tipoCombustivel;
 	}
 
 	public Long getId() {
@@ -96,12 +115,12 @@ public class Veiculo implements Serializable {
 		this.tipoCombustivel = tipoCombustivel;
 	}
 
-	public Proprietario getProprietario() {
-		return proprietario;
+	public List<Proprietario> getProprietarios() {
+		return proprietarios;
 	}
 
-	public void setProprietario(Proprietario proprietario) {
-		this.proprietario = proprietario;
+	public void setProprietarios(List<Proprietario> proprietarios) {
+		this.proprietarios = proprietarios;
 	}
 
 	@Override
@@ -131,9 +150,24 @@ public class Veiculo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Veiculo [id=" + id + ", fabricante=" + fabricante + ", modelo=" + modelo + ", anoFabricacao="
-				+ anoFabricacao + ", anoModelo=" + anoModelo + ", tipoCombustivel=" + tipoCombustivel
-				+ ", proprietario=" + proprietario + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("\nVeículos");
+		sb.append("\nCód.:");
+		sb.append(id);
+		sb.append("\nFabricante: ");
+		sb.append(fabricante);
+		sb.append("\nModelo: ");
+		sb.append(modelo);
+		sb.append("\nAno/Fabricação: ");
+		sb.append(anoFabricacao);
+		sb.append("\nAno/Modelo: ");
+		sb.append(anoModelo);
+		sb.append("\nTipo de Combustível: ");
+		sb.append(tipoCombustivel);
+		sb.append("\nProprietário: ");
+		sb.append(proprietarios);
+		return sb.toString();
+
 	}
 
 }

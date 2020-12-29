@@ -1,12 +1,15 @@
 package br.com.emanuelgabriel.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,7 +31,17 @@ public class Proprietario implements Serializable {
 	@Column(length = 15)
 	private String telefone;
 
+	@ManyToMany(mappedBy = "proprietarios")
+	private List<Veiculo> veiculos = new ArrayList<Veiculo>();
+
 	public Proprietario() {
+	}
+
+	public Proprietario(Long id, String nome, String email, String telefone) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
 	}
 
 	public Long getId() {
@@ -61,6 +74,14 @@ public class Proprietario implements Serializable {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public List<Veiculo> getVeiculos() {
+		return veiculos;
+	}
+
+	public void setVeiculos(List<Veiculo> veiculos) {
+		this.veiculos = veiculos;
 	}
 
 	@Override

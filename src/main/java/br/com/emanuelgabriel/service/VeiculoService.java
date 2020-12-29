@@ -27,30 +27,33 @@ public class VeiculoService implements VeiculoRepository {
 		this.em = HibernateUtil.getEntityManager();
 	}
 
+	@Transactional
 	@Override
 	public void criar(Veiculo veiculo) {
-		this.em.getTransaction().begin();
+		em.getTransaction().begin();
+
 		if (veiculo.getId() == null) {
 			this.em.persist(veiculo);
 		} else {
-			this.em.merge(veiculo);
+			em.merge(veiculo);
 		}
-		this.em.getTransaction().commit();
 
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	@Override
 	public List<Veiculo> findAll() {
 		// Usando JPQL - join fetch
-		// return em.createQuery("FROM Veiculo v JOIN FETCH v.proprietario",
-		// Veiculo.class).getResultList();
+		//return em.createQuery("FROM Veiculo v JOIN FETCH v.proprietarios",
+		//Veiculo.class).getResultList();
 
 		// Usando CRITERIA
 		CriteriaBuilder builder = this.em.getCriteriaBuilder();
 		CriteriaQuery<Veiculo> criteriaQuery = builder.createQuery(Veiculo.class);
 
 		Root<Veiculo> veiculo = criteriaQuery.from(Veiculo.class);
-		veiculo.fetch("proprietario");
+		veiculo.fetch("proprietarios");
 		criteriaQuery.select(veiculo);
 
 		// criar a query
@@ -80,17 +83,17 @@ public class VeiculoService implements VeiculoRepository {
 	}
 
 	@Override
-	public Veiculo findByNomeFabricante(String fabricante) {
-
+	public List<Veiculo> findByNomeFabricante(String nomeFabricante) {
 		try {
 
+			// JOIN FETCH v.proprietarios
 			TypedQuery<Veiculo> veiculoQuery = this.em.createQuery(
-					"SELECT v FROM Veiculo v WHERE lower(v.fabricante) LIKE lower(concat('%', :fabricante, '%'))",
-					Veiculo.class).setParameter("fabricante", fabricante);
-			Veiculo veiculo = veiculoQuery.getSingleResult();
-			return veiculo;
+					"SELECT v FROM Veiculo v JOIN FETCH v.proprietarios WHERE lower(v.fabricante) like lower(concat('%', :fabricante, '%'))",
+					Veiculo.class).setParameter("fabricante", nomeFabricante);
+			List<Veiculo> veiculos = veiculoQuery.getResultList();
+			return veiculos;
 
-		} catch (NoResultException | NonUniqueResultException e) {
+		} catch (PersistenceException e) {
 			return null;
 		}
 
@@ -101,9 +104,7 @@ public class VeiculoService implements VeiculoRepository {
 
 		try {
 
-			this.em.getTransaction().begin();
 			Long qtdVeiculo = (Long) this.em.createQuery("SELECT count(v.id) FROM Veiculo v").getSingleResult();
-			this.em.getTransaction().commit();
 			return qtdVeiculo;
 
 		} catch (NoResultException | NonUniqueResultException e) {

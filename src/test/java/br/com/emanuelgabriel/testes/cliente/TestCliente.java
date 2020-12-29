@@ -2,6 +2,8 @@ package br.com.emanuelgabriel.testes.cliente;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.emanuelgabriel.model.Cliente;
@@ -17,11 +19,13 @@ public class TestCliente {
 
 	private static final String CLIENTE_NAO_ENCONTRADO = "Cliente não encontrado";
 	private static final String NENHUM_REGISTRO_ENCONTRADAO = "Nenhum registro encontrado...";
+	Logger log = Logger.getLogger(this.getClass().getName());
 
 	private ClienteServiceImpl clienteRepository;
 	private TelefoneRepository telefoneRepository;
 
-	public TestCliente() {
+	@Before
+	public void init() {
 		this.clienteRepository = new ClienteServiceImpl();
 		this.telefoneRepository = new TelefoneServiceImpl();
 	}
@@ -50,6 +54,8 @@ public class TestCliente {
 
 	@Test
 	public void listarTodos() {
+
+		log.info("--- Lista os clientes---");
 
 		List<Cliente> clientes = clienteRepository.findAll();
 		if (clientes.isEmpty()) {
