@@ -12,17 +12,19 @@ public class TelefoneServiceImpl implements TelefoneRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager entityManager;
+	private EntityManager manager;
 
 	public TelefoneServiceImpl() {
-		this.entityManager = HibernateUtil.getEntityManager();
+		this.manager = HibernateUtil.getEntityManager();
 	}
 
 	@Override
-	public void criar(Telefone telefone) {
-		entityManager.getTransaction().begin();
-		entityManager.persist(telefone);
-		entityManager.getTransaction().commit();
+	public Telefone criar(Telefone telefone) {
+		manager.getTransaction().begin();
+		manager.persist(telefone);
+		manager.getTransaction().commit();
+		manager.close();
+		return telefone;
 	}
 
 	@Override

@@ -12,22 +12,24 @@ import br.com.emanuelgabriel.utils.HibernateUtil;
 public class ProprietarioServiceImpl implements ProprietarioRepository {
 
 	private static final long serialVersionUID = 1L;
-	private EntityManager em;
+	private EntityManager manager;
 
 	public ProprietarioServiceImpl() {
-		em = HibernateUtil.getEntityManager();
+		manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Proprietario proprietario) {
-		em.getTransaction().begin();
+	public Proprietario criar(Proprietario proprietario) {
+		manager.getTransaction().begin();
 		if (proprietario.getId() == null) {
-			em.persist(proprietario);
+			manager.persist(proprietario);
 		} else {
-			em.merge(proprietario);
+			proprietario = manager.merge(proprietario);
 		}
-		em.getTransaction().commit();
+		manager.getTransaction().commit();
+		manager.close();
+		return proprietario;
 
 	}
 
@@ -38,7 +40,7 @@ public class ProprietarioServiceImpl implements ProprietarioRepository {
 
 	@Override
 	public Proprietario findByCodigo(Long codigo) {
-		return em.find(Proprietario.class, codigo);
+		return manager.find(Proprietario.class, codigo);
 	}
 
 	@Override

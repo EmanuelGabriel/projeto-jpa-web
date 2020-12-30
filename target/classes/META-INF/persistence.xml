@@ -21,6 +21,8 @@
 		<class>br.com.emanuelgabriel.model.Acessorio</class>
 		<class>br.com.emanuelgabriel.model.Proprietario</class>
 		<class>br.com.emanuelgabriel.model.Veiculo</class>
+		<class>br.com.emanuelgabriel.model.Autor</class>
+		<class>br.com.emanuelgabriel.model.Livro</class>
 
 
 	   <properties>

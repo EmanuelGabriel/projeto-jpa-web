@@ -18,33 +18,35 @@ public class ProdutoServiceImpl implements ProdutoRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager entityManager;
+	private EntityManager manager;
 
 	public ProdutoServiceImpl() {
-		this.entityManager = HibernateUtil.getEntityManager();
+		this.manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Produto produto) {
+	public Produto criar(Produto produto) {
 
-		entityManager.getTransaction().begin();
+		manager.getTransaction().begin();
 		if (produto.getCodigo() == null) {
-			entityManager.persist(produto);
+			manager.persist(produto);
 		} else {
-			entityManager.merge(produto);
+			produto = manager.merge(produto);
 		}
 
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
+		manager.close();
+		return produto;
 
 	}
 
 	@Override
 	public List<Produto> findAll() {
-		entityManager.getTransaction().begin();
-		TypedQuery<Produto> produtos = entityManager.createQuery("SELECT p FROM Produto p", Produto.class);
+		manager.getTransaction().begin();
+		TypedQuery<Produto> produtos = manager.createQuery("SELECT p FROM Produto p", Produto.class);
 		List<Produto> listaProduto = produtos.getResultList();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return listaProduto;
 	}
 
@@ -54,8 +56,8 @@ public class ProdutoServiceImpl implements ProdutoRepository {
 		try {
 
 			produto = findByCodigo(produto.getCodigo());
-			entityManager.remove(produto);
-			entityManager.flush();
+			manager.remove(produto);
+			manager.flush();
 
 		} catch (PersistenceException e) {
 			throw new RegraNegocioException("Produto não pode ser excluído");
@@ -65,14 +67,14 @@ public class ProdutoServiceImpl implements ProdutoRepository {
 
 	@Override
 	public Produto findByCodigo(Long codigo) {
-		return entityManager.find(Produto.class, codigo);
+		return manager.find(Produto.class, codigo);
 	}
 
 	@Override
 	public Produto findByNome(String nome) {
 
 		try {
-			TypedQuery<Produto> typedQuery = entityManager
+			TypedQuery<Produto> typedQuery = manager
 					.createQuery("SELECT p FROM Produto p WHERE lower(p.nome) LIKE lower(concat('%', :nome, '%'))",
 							Produto.class)
 					.setParameter("nome", nome);
@@ -86,7 +88,7 @@ public class ProdutoServiceImpl implements ProdutoRepository {
 
 	@Override
 	public List<Produto> findPorNome(String nome) {
-		return this.entityManager.createQuery("from Produto where upper(nome) like :nome", Produto.class)
+		return this.manager.createQuery("from Produto where upper(nome) like :nome", Produto.class)
 				.setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface GenericService<T> extends Serializable {
 
-	void criar(T obj);
+	T criar(T obj);
 
 	List<T> findAll();
 

@@ -37,3 +37,28 @@ INSERT INTO veiculo_proprietario (veiculo_id, proprietario_id) VALUES (9,10);
 INSERT INTO veiculo_proprietario (veiculo_id, proprietario_id) VALUES (10,10);
 
 
+
+-- INSERIR DADOS DA TABELA AUTOR
+INSERT INTO autor (id, nome, sobrenome) VALUES (1, 'Pedro Júnior Alcântara', 'Júnior');
+INSERT INTO autor (id, nome, sobrenome) VALUES (2, 'Mário Quintana', 'Quintana');
+INSERT INTO autor (id, nome, sobrenome) VALUES (3, 'Marquinhos Pontes', 'Pontes');
+INSERT INTO autor (id, nome, sobrenome) VALUES (4, 'Eduardo Cabral', 'Ferreira');
+INSERT INTO autor (id, nome, sobrenome) VALUES (5, 'Clodoalto Nunes', 'Vanzin');
+
+
+-- INSERIR DADOS DA TABELA LIVRO
+INSERT INTO livro (id, titulo, data_publicacao, isbn) VALUES (1, 'Jakarta EE', '2018-11-12', '3183912');
+INSERT INTO livro (id, titulo, data_publicacao, isbn) VALUES (2, 'Os segredos de uma vida saudável', '2019-01-11', '1029876');
+INSERT INTO livro (id, titulo, data_publicacao, isbn) VALUES (3, 'SpaceX e suas tecnologias', '2020-07-08', '8769983');
+INSERT INTO livro (id, titulo, data_publicacao, isbn) VALUES (4, 'Como amar sem amar?', '2002-01-01', '140896');
+INSERT INTO livro (id, titulo, data_publicacao, isbn) VALUES (5, 'A vida animal a dois', '2001-02-10', '1775623');
+
+
+-- INSERIR DADOS NA TABELA DE RELACIONAMENTO - livro_autor
+INSERT INTO livro_autor (livro_id, autor_id) VALUES (1,1);
+INSERT INTO livro_autor (livro_id, autor_id) VALUES (2,2);
+INSERT INTO livro_autor (livro_id, autor_id) VALUES (3,3);
+INSERT INTO livro_autor (livro_id, autor_id) VALUES (4,4);
+INSERT INTO livro_autor (livro_id, autor_id) VALUES (5,5);
+INSERT INTO livro_autor (livro_id, autor_id) VALUES (1,3);
+

@@ -21,35 +21,36 @@ public class VeiculoService implements VeiculoRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager em;
+	private EntityManager manager;
 
 	public VeiculoService() {
-		this.em = HibernateUtil.getEntityManager();
+		this.manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Veiculo veiculo) {
-		em.getTransaction().begin();
+	public Veiculo criar(Veiculo veiculo) {
+		manager.getTransaction().begin();
 
 		if (veiculo.getId() == null) {
-			this.em.persist(veiculo);
+			manager.persist(veiculo);
 		} else {
-			em.merge(veiculo);
+			veiculo = manager.merge(veiculo);
 		}
 
-		em.getTransaction().commit();
-		em.close();
+		manager.getTransaction().commit();
+		manager.close();
+		return veiculo;
 	}
 
 	@Override
 	public List<Veiculo> findAll() {
 		// Usando JPQL - join fetch
-		//return em.createQuery("FROM Veiculo v JOIN FETCH v.proprietarios",
-		//Veiculo.class).getResultList();
+		// return em.createQuery("FROM Veiculo v JOIN FETCH v.proprietarios",
+		// Veiculo.class).getResultList();
 
 		// Usando CRITERIA
-		CriteriaBuilder builder = this.em.getCriteriaBuilder();
+		CriteriaBuilder builder = this.manager.getCriteriaBuilder();
 		CriteriaQuery<Veiculo> criteriaQuery = builder.createQuery(Veiculo.class);
 
 		Root<Veiculo> veiculo = criteriaQuery.from(Veiculo.class);
@@ -57,13 +58,13 @@ public class VeiculoService implements VeiculoRepository {
 		criteriaQuery.select(veiculo);
 
 		// criar a query
-		TypedQuery<Veiculo> query = this.em.createQuery(criteriaQuery);
+		TypedQuery<Veiculo> query = this.manager.createQuery(criteriaQuery);
 		return query.getResultList();
 	}
 
 	@Override
 	public Veiculo findByCodigo(Long codigo) {
-		return this.em.find(Veiculo.class, codigo);
+		return this.manager.find(Veiculo.class, codigo);
 	}
 
 	@Transactional
@@ -73,8 +74,8 @@ public class VeiculoService implements VeiculoRepository {
 		try {
 
 			veiculo = findByCodigo(veiculo.getId());
-			this.em.remove(veiculo);
-			this.em.flush();
+			this.manager.remove(veiculo);
+			this.manager.flush();
 
 		} catch (PersistenceException e) {
 			throw new RegraNegocioException("Veiculo não pode ser removido");
@@ -87,7 +88,7 @@ public class VeiculoService implements VeiculoRepository {
 		try {
 
 			// JOIN FETCH v.proprietarios
-			TypedQuery<Veiculo> veiculoQuery = this.em.createQuery(
+			TypedQuery<Veiculo> veiculoQuery = this.manager.createQuery(
 					"SELECT v FROM Veiculo v JOIN FETCH v.proprietarios WHERE lower(v.fabricante) like lower(concat('%', :fabricante, '%'))",
 					Veiculo.class).setParameter("fabricante", nomeFabricante);
 			List<Veiculo> veiculos = veiculoQuery.getResultList();
@@ -104,7 +105,7 @@ public class VeiculoService implements VeiculoRepository {
 
 		try {
 
-			Long qtdVeiculo = (Long) this.em.createQuery("SELECT count(v.id) FROM Veiculo v").getSingleResult();
+			Long qtdVeiculo = (Long) this.manager.createQuery("SELECT count(v.id) FROM Veiculo v").getSingleResult();
 			return qtdVeiculo;
 
 		} catch (NoResultException | NonUniqueResultException e) {

@@ -17,34 +17,36 @@ import br.com.emanuelgabriel.utils.HibernateUtil;
 public class PedidoServiceImpl implements PedidoRepository {
 
 	private static final long serialVersionUID = 1L;
-	private EntityManager entityManager;
+	private EntityManager manager;
 
 	public PedidoServiceImpl() {
-		this.entityManager = HibernateUtil.getEntityManager();
+		this.manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Pedido pedido) {
-		entityManager.getTransaction().begin();
+	public Pedido criar(Pedido pedido) {
+		manager.getTransaction().begin();
 		pedido.setDataCriacao(new Date());
 		pedido.setStatus(StatusPedido.ORCAMENTO);
-		entityManager.merge(pedido);
-		entityManager.getTransaction().commit();
+		manager.merge(pedido);
+		manager.getTransaction().commit();
+		manager.close();
+		return pedido;
 	}
 
 	@Override
 	public List<Pedido> findAll() {
-		entityManager.getTransaction().begin();
-		TypedQuery<Pedido> pedidos = entityManager.createQuery("SELECT p FROM Pedido p", Pedido.class);
+		manager.getTransaction().begin();
+		TypedQuery<Pedido> pedidos = manager.createQuery("SELECT p FROM Pedido p", Pedido.class);
 		List<Pedido> lista = pedidos.getResultList();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return lista;
 	}
 
 	@Override
 	public Pedido findByCodigo(Long codigo) {
-		return this.entityManager.find(Pedido.class, codigo);
+		return this.manager.find(Pedido.class, codigo);
 	}
 
 	@Transactional
@@ -54,8 +56,8 @@ public class PedidoServiceImpl implements PedidoRepository {
 		try {
 
 			pedido = findByCodigo(pedido.getCodigo());
-			entityManager.remove(pedido);
-			entityManager.flush();
+			manager.remove(pedido);
+			manager.flush();
 
 		} catch (PersistenceException e) {
 			throw new RegraNegocioException("Pedido não pode ser excluído");

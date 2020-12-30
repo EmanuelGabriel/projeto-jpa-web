@@ -17,53 +17,55 @@ public class LocalServiceImpl implements LocalRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager entityManager;
+	private EntityManager manager;
 
 	public LocalServiceImpl() {
-		this.entityManager = HibernateUtil.getEntityManager();
+		this.manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Local local) {
-		entityManager.getTransaction().begin();
+	public Local criar(Local local) {
+		manager.getTransaction().begin();
 		if (local.getCodigo() == null) {
-			entityManager.persist(local);
+			manager.persist(local);
 		} else {
-			entityManager.merge(local);
+			local = manager.merge(local);
 		}
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
+		manager.close();
+		return local;
 	}
 
 	@Override
 	public List<Local> findAll() {
-		entityManager.getTransaction().begin();
-		TypedQuery<Local> localQuery = entityManager.createQuery("SELECT l FROM Local l", Local.class);
+		manager.getTransaction().begin();
+		TypedQuery<Local> localQuery = manager.createQuery("SELECT l FROM Local l", Local.class);
 		List<Local> listaLocais = localQuery.getResultList();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return listaLocais;
 	}
 
 	@Override
 	public Local findByCodigo(Long codigo) {
-		return entityManager.find(Local.class, codigo);
+		return manager.find(Local.class, codigo);
 	}
 
 	@Transactional
 	@Override
 	public void remover(Local local) {
-		entityManager.getTransaction().begin();
+		manager.getTransaction().begin();
 		Local localRemover = findByCodigo(local.getCodigo());
-		entityManager.remove(localRemover);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
+		manager.remove(localRemover);
+		manager.flush();
+		manager.getTransaction().commit();
 	}
 
 	@Override
 	public Local findByPredio(String predio) {
 
 		try {
-			TypedQuery<Local> localQuery = entityManager
+			TypedQuery<Local> localQuery = manager
 					.createQuery("SELECT l FROM Local l WHERE lower(l.predio) LIKE lower(concat('%', :predio , '%')) ",
 							Local.class)
 					.setParameter("predio", predio);

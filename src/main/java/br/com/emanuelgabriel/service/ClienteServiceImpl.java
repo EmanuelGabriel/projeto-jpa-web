@@ -17,48 +17,50 @@ public class ClienteServiceImpl implements ClienteRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager entityManager;
+	private EntityManager manager;
 
 	public ClienteServiceImpl() {
-		this.entityManager = HibernateUtil.getEntityManager();
+		this.manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Cliente cliente) {
-		entityManager.getTransaction().begin();
+	public Cliente criar(Cliente cliente) {
+		manager.getTransaction().begin();
 		if (cliente.getCodigo() == null) {
-			entityManager.persist(cliente);
+			manager.persist(cliente);
 		} else {
-			entityManager.merge(cliente);
+			cliente = manager.merge(cliente);
 		}
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
+		manager.close();
+		return cliente;
 	}
 
 	public List<Cliente> findAll() {
-		entityManager.getTransaction().begin();
-		TypedQuery<Cliente> clientes = entityManager.createQuery("SELECT c FROM Cliente c", Cliente.class);
+		manager.getTransaction().begin();
+		TypedQuery<Cliente> clientes = manager.createQuery("SELECT c FROM Cliente c", Cliente.class);
 		List<Cliente> resultado = clientes.getResultList();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return resultado;
 	}
 
 	@Override
 	public Cliente findByCodigo(Long codigo) {
-		return entityManager.find(Cliente.class, codigo);
+		return manager.find(Cliente.class, codigo);
 	}
 
 	@Transactional
 	public void remover(Cliente cliente) {
-		entityManager.getTransaction().begin();
-		entityManager.remove(cliente);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().begin();
+		manager.remove(cliente);
+		manager.flush();
+		manager.getTransaction().commit();
 	}
 
 	@Override
 	public Cliente findByNome(String nome) {
-		TypedQuery<Cliente> clienteQuery = entityManager
+		TypedQuery<Cliente> clienteQuery = manager
 				.createQuery("SELECT c FROM Cliente c WHERE lower(c.nome) LIKE lower(concat('%', :nome, '%'))",
 						Cliente.class)
 				.setParameter("nome", nome);
@@ -69,7 +71,7 @@ public class ClienteServiceImpl implements ClienteRepository {
 	@Override
 	public List<Cliente> buscarPorNomes(String nome) {
 
-		TypedQuery<Cliente> clientesQuery = entityManager
+		TypedQuery<Cliente> clientesQuery = manager
 				.createQuery("SELECT c FROM Cliente c WHERE lower(c.nome) LIKE lower(concat('%', :nome, '%'))",
 						Cliente.class)
 				.setParameter("nome", nome);
@@ -82,40 +84,40 @@ public class ClienteServiceImpl implements ClienteRepository {
 	@Override
 	public List<Cliente> listaMaximaResultado() {
 
-		entityManager.getTransaction().begin();
+		manager.getTransaction().begin();
 
-		TypedQuery<Cliente> clienteQuery = entityManager
-				.createQuery("SELECT c FROM Cliente c ORDER BY c.nome", Cliente.class).setMaxResults(5);
+		TypedQuery<Cliente> clienteQuery = manager.createQuery("SELECT c FROM Cliente c ORDER BY c.nome", Cliente.class)
+				.setMaxResults(5);
 		List<Cliente> listaCliente = clienteQuery.getResultList();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return listaCliente;
 	}
 
 	@Override
 	public List<Cliente> buscarPorNomeAndEmail(String nome, String email) {
-		entityManager.getTransaction().begin();
+		manager.getTransaction().begin();
 
-		TypedQuery<Cliente> clienteQuery = entityManager
+		TypedQuery<Cliente> clienteQuery = manager
 				.createQuery("SELECT c FROM Cliente c WHERE c.nome = :nome OR c.email = :email", Cliente.class)
 				.setParameter("nome", nome).setParameter("email", email);
 		List<Cliente> clientes = clienteQuery.getResultList();
 
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return clientes;
 	}
 
 	@Override
 	public Cliente findByEmail(String email) {
-		entityManager.getTransaction().begin();
+		manager.getTransaction().begin();
 
 		try {
 
-			TypedQuery<Cliente> clienteQuery = entityManager
+			TypedQuery<Cliente> clienteQuery = manager
 					.createQuery("SELECT c FROM Cliente c WHERE c.email = :email", Cliente.class)
 					.setParameter("email", email);
 
 			Cliente cliente = clienteQuery.getSingleResult();
-			entityManager.getTransaction().commit();
+			manager.getTransaction().commit();
 			return cliente;
 
 		} catch (NoResultException | NonUniqueResultException e) {
@@ -127,15 +129,15 @@ public class ClienteServiceImpl implements ClienteRepository {
 	@Override
 	public List<Cliente> buscarPorTipo(TipoPessoa tipoPessoa) {
 
-		entityManager.getTransaction().begin();
+		manager.getTransaction().begin();
 
-		TypedQuery<Cliente> buscaPorTipoQuery = entityManager
+		TypedQuery<Cliente> buscaPorTipoQuery = manager
 				.createQuery("SELECT c FROM Cliente c WHERE c.tipo = :tipo", Cliente.class)
 				.setParameter("tipo", tipoPessoa);
 
 		List<Cliente> cliente = buscaPorTipoQuery.getResultList();
 
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return cliente;
 	}
 
@@ -143,9 +145,9 @@ public class ClienteServiceImpl implements ClienteRepository {
 	public Long quantidadeClientes() {
 		try {
 
-			entityManager.getTransaction().begin();
-			Long qtdClientes = (Long) entityManager.createQuery("SELECT count(*) FROM Cliente c").getSingleResult();
-			entityManager.getTransaction().commit();
+			manager.getTransaction().begin();
+			Long qtdClientes = (Long) manager.createQuery("SELECT count(*) FROM Cliente c").getSingleResult();
+			manager.getTransaction().commit();
 			return qtdClientes;
 
 		} catch (NoResultException | NonUniqueResultException e) {

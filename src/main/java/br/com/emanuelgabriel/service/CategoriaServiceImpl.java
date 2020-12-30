@@ -16,37 +16,39 @@ public class CategoriaServiceImpl implements CategoriaRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager entityManager;
+	private EntityManager manager;
 
 	public CategoriaServiceImpl() {
-		entityManager = HibernateUtil.getEntityManager();
+		manager = HibernateUtil.getEntityManager();
 	}
 
 	@Transactional
 	@Override
-	public void criar(Categoria categoria) {
-		entityManager.getTransaction().begin();
+	public Categoria criar(Categoria categoria) {
+		manager.getTransaction().begin();
 		if (categoria.getCodigo() == null) {
-			entityManager.persist(categoria);
+			manager.persist(categoria);
 		} else {
-			entityManager.merge(categoria);
+			categoria = manager.merge(categoria);
 		}
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
+		manager.close();
+		return categoria;
 
 	}
 
 	@Override
 	public List<Categoria> findAll() {
-		entityManager.getTransaction().begin();
-		TypedQuery<Categoria> categoriaQuery = entityManager.createQuery("SELECT c FROM Categoria c", Categoria.class);
+		manager.getTransaction().begin();
+		TypedQuery<Categoria> categoriaQuery = manager.createQuery("SELECT c FROM Categoria c", Categoria.class);
 		List<Categoria> categorias = categoriaQuery.getResultList();
-		entityManager.getTransaction().commit();
+		manager.getTransaction().commit();
 		return categorias;
 	}
 
 	@Override
 	public Categoria findByCodigo(Long codigo) {
-		return this.entityManager.find(Categoria.class, codigo);
+		return this.manager.find(Categoria.class, codigo);
 	}
 
 	@Transactional
@@ -56,8 +58,8 @@ public class CategoriaServiceImpl implements CategoriaRepository {
 		try {
 
 			categoria = findByCodigo(categoria.getCodigo());
-			entityManager.remove(categoria);
-			entityManager.flush();
+			manager.remove(categoria);
+			manager.flush();
 
 		} catch (PersistenceException e) {
 			throw new RegraNegocioException("Categoria não pode ser excluída");
