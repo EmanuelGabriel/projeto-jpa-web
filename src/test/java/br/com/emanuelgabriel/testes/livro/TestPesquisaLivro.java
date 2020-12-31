@@ -6,20 +6,19 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.emanuelgabriel.dao.LivroDAO;
 import br.com.emanuelgabriel.model.Livro;
-import br.com.emanuelgabriel.repository.LivroRepository;
-import br.com.emanuelgabriel.repository.LivroRepositoryImp;
 
 public class TestPesquisaLivro {
 
-	Logger log = Logger.getLogger(this.getClass().getName());
+	private static Logger log = Logger.getLogger(TestPesquisaLivro.class.getName());
 
-	private static final String NENHUM_REGISTRO_ENCONTRADO = "Nenhum registro encontrado...";
-	private LivroRepository livroRepository;
+	private static final String NENHUM_REGISTRO_ENCONTRADO = "Nenhum registro encontrado";
+	private LivroDAO livroDAO;
 
 	@Before
 	public void init() {
-		this.livroRepository = new LivroRepositoryImp();
+		this.livroDAO = new LivroDAO();
 	}
 
 	@Test
@@ -27,7 +26,7 @@ public class TestPesquisaLivro {
 
 		log.info("---Exibe a lista dos Livros cadastrados---");
 
-		List<Livro> livros = this.livroRepository.findAll();
+		List<Livro> livros = this.livroDAO.listarTodos();
 		if (livros.isEmpty()) {
 			log.info(NENHUM_REGISTRO_ENCONTRADO);
 		}
@@ -41,8 +40,8 @@ public class TestPesquisaLivro {
 
 		log.info("---Busca os Livros pelo seu Título---");
 
-		String tituloLivro = "VI";
-		List<Livro> livros = this.livroRepository.findByTitulo(tituloLivro);
+		String tituloLivro = "dois";
+		List<Livro> livros = this.livroDAO.findByTitulo(tituloLivro);
 		if (livros.isEmpty()) {
 			log.warn(NENHUM_REGISTRO_ENCONTRADO);
 		}

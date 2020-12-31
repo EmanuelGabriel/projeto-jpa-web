@@ -35,6 +35,14 @@ public abstract class HibernateUtil {
 	}
 
 	/**
+	 * Fechando a conexão
+	 * @param em
+	 */
+	public void close(EntityManager em) {
+		em.close();
+	}
+
+	/**
 	 * Retorna a primary key
 	 * 
 	 * @param object

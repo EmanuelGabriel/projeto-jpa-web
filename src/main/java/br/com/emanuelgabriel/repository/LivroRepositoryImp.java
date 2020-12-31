@@ -12,57 +12,57 @@ public class LivroRepositoryImp implements LivroRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager manager;
+	private EntityManager em;
 
 	public LivroRepositoryImp() {
-		this.manager = HibernateUtil.getEntityManager();
+		this.em = HibernateUtil.getEntityManager();
 	}
 
 	@Override
 	public Livro criar(Livro livro) {
-		manager.getTransaction().begin();
+		em.getTransaction().begin();
 		if (livro.getId() == null) {
-			manager.persist(livro);
+			em.persist(livro);
 		} else {
-			livro = manager.merge(livro);
+			livro = em.merge(livro);
 		}
-		manager.getTransaction().commit();
-		manager.close();
+		em.getTransaction().commit();
+		em.close();
 
 		return livro;
 	}
 
 	@Override
 	public List<Livro> findAll() {
-		TypedQuery<Livro> livroQuery = manager.createQuery("FROM Livro l JOIN FETCH l.autores", Livro.class);
+		TypedQuery<Livro> livroQuery = em.createQuery("FROM Livro l JOIN FETCH l.autores", Livro.class);
 		List<Livro> livros = livroQuery.getResultList();
 		return livros;
 	}
 
 	@Override
 	public Livro findByCodigo(Long codigo) {
-		return manager.find(Livro.class, codigo);
+		return em.find(Livro.class, codigo);
 	}
 
 	@Override
 	public void remover(Livro livro) {
 
-		manager.getTransaction().begin();
+		em.getTransaction().begin();
 
-		if (manager.contains(livro)) {
-			manager.remove(livro);
-			manager.flush();
+		if (em.contains(livro)) {
+			em.remove(livro);
+			em.flush();
 		} else {
-			manager.merge(livro);
+			em.merge(livro);
 		}
 
-		manager.getTransaction().commit();
+		em.getTransaction().commit();
 
 	}
 
 	@Override
 	public List<Livro> findByTitulo(String titulo) {
-		TypedQuery<Livro> livroQuery = manager
+		TypedQuery<Livro> livroQuery = em
 				.createQuery("SELECT l FROM Livro l WHERE lower(l.titulo) like lower(concat('%', :titulo, '%'))",
 						Livro.class)
 				.setParameter("titulo", titulo);

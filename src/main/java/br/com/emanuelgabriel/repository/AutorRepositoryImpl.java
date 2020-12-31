@@ -12,52 +12,52 @@ public class AutorRepositoryImpl implements AutorRepository {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager manager;
+	private EntityManager em;
 
 	public AutorRepositoryImpl() {
-		this.manager = HibernateUtil.getEntityManager();
+		this.em = HibernateUtil.getEntityManager();
 	}
 
 	@Override
 	public Autor criar(Autor autor) {
-		manager.getTransaction().begin();
+		em.getTransaction().begin();
 
 		if (autor.getId() == null) {
-			manager.persist(autor);
+			em.persist(autor);
 		} else {
-			autor = manager.merge(autor);
+			autor = em.merge(autor);
 		}
 
-		manager.getTransaction().commit();
-		manager.close();
+		em.getTransaction().commit();
+		em.close();
 
 		return autor;
 	}
 
 	@Override
 	public List<Autor> findAll() {
-		TypedQuery<Autor> autorQuery = manager.createQuery("FROM Autor a JOIN FETCH a.livros", Autor.class);
+		TypedQuery<Autor> autorQuery = em.createQuery("FROM Autor a JOIN FETCH a.livros", Autor.class);
 		return autorQuery.getResultList();
 	}
 
 	@Override
 	public Autor findByCodigo(Long codigo) {
-		return manager.find(Autor.class, codigo);
+		return em.find(Autor.class, codigo);
 	}
 
 	@Override
 	public void remover(Autor autor) {
-		manager.getTransaction().begin();
+		em.getTransaction().begin();
 
-		if (manager.contains(autor)) {
-			manager.remove(autor);
-			manager.flush();
+		if (em.contains(autor)) {
+			em.remove(autor);
+			em.flush();
 		} else {
-			manager.merge(autor);
+			em.merge(autor);
 		}
 
-		manager.getTransaction().commit();
-		manager.close();
+		em.getTransaction().commit();
+		em.close();
 
 	}
 

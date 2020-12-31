@@ -36,7 +36,9 @@ public class Livro implements Serializable {
 	private String isbn;
 
 	@ManyToMany
-	@JoinTable(name = "livro_autor", joinColumns = @JoinColumn(name = "livro_id"), inverseJoinColumns = @JoinColumn(name = "autor_id"))
+	@JoinTable(name = "livro_autor", 
+	joinColumns = @JoinColumn(name = "livro_id"), 
+	inverseJoinColumns = @JoinColumn(name = "autor_id"))
 	private Set<Autor> autores = new HashSet<Autor>();
 
 	public Livro() {

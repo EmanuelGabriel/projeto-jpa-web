@@ -1,4 +1,4 @@
-package br.com.emanuelgabriel.daos;
+package br.com.emanuelgabriel.dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 import br.com.emanuelgabriel.utils.HibernateUtil;
 
-public abstract class DAOGeneric<E extends Serializable, ID> { // implements CrudRepository<E, Long> {
+public abstract class DAOGeneric<E extends Serializable, ID> {
 
 	private EntityManager manager;
 

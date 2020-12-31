@@ -1,8 +1,8 @@
-package br.com.emanuelgabriel.daos;
+package br.com.emanuelgabriel.dao;
 
 import br.com.emanuelgabriel.model.Autor;
 
-public class AutorDAO extends DAOGeneric<Autor, Long> {
+public class AutorDAO extends DAO<Autor> {
 
 	public AutorDAO() {
 		super(Autor.class);
