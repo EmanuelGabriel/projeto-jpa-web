@@ -70,8 +70,8 @@ INSERT INTO post (id, descricao, titulo) VALUES (3, 'O segredo dos macacos no Br
 
 -- INSERIR DADOS DA TABELA POST_COMENTARIO
 INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (1, '2021-01-01','Esse é meu post favorito jovem',1);
-INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (2, '2021-01-01','Esse é meu post favorito jovem',2);
-INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (3, '2021-01-01','Esse é meu post favorito jovem',3);
+INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (2, '2021-01-01','Como assim a natureza se modifica?',2);
+INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (3, '2021-01-01','Essa música eu já ouvi',3);
 
 
 
