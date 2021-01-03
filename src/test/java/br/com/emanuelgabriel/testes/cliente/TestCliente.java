@@ -62,9 +62,8 @@ public class TestCliente {
 			System.out.println(NENHUM_REGISTRO_ENCONTRADAO);
 		}
 
-		for (Cliente cliente : clientes) {
-			System.out.println(cliente);
-		}
+		clientes.forEach(cli -> {System.out.println(cli);});
+		
 	}
 
 	@Test

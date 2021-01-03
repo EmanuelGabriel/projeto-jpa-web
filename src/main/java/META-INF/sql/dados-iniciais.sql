@@ -62,3 +62,17 @@ INSERT INTO livro_autor (livro_id, autor_id) VALUES (4,4);
 INSERT INTO livro_autor (livro_id, autor_id) VALUES (5,5);
 INSERT INTO livro_autor (livro_id, autor_id) VALUES (1,3);
 
+
+-- INSERIR DADOS NA TABELA POST
+INSERT INTO post (id, descricao, titulo) VALUES (1, 'Como tudo começou no Mundo?', 'A vida existe além de um próximo dia');
+INSERT INTO post (id, descricao, titulo) VALUES (2, 'A natureza como nunca vista', 'Os rebanhos de toda a natureza');
+INSERT INTO post (id, descricao, titulo) VALUES (3, 'O segredo dos macacos no Brasil', 'Cada macaco no seu galho');
+
+-- INSERIR DADOS DA TABELA POST_COMENTARIO
+INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (1, '2021-01-01','Esse é meu post favorito jovem',1);
+INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (2, '2021-01-01','Esse é meu post favorito jovem',2);
+INSERT INTO post_comentario (id, data_comentario, texto, post_id) VALUES (3, '2021-01-01','Esse é meu post favorito jovem',3);
+
+
+
+

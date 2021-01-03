@@ -27,7 +27,7 @@ public class TestCadastroLivro {
 	@Test
 	public void salvar() {
 
-		Autor autor = this.autorDAO.buscaPorId(3L);
+		Autor autor = this.autorDAO.buscaPorId(2L);
 
 		Livro livro = new Livro();
 		livro.setTitulo("Por que os loucos piram?");

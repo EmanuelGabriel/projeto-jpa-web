@@ -1,23 +1,22 @@
 package br.com.emanuelgabriel.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "livro")
-public class Livro implements Serializable {
+@Table(name = "post")
+public class Post implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,30 +25,33 @@ public class Livro implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 60)
 	private String titulo;
 
-	@Column(name = "data_publicacao", nullable = false)
-	private LocalDate dataPublicacao;
+	@Column(length = 50)
+	private String descricao;
 
-	@Column(nullable = false, length = 15)
-	private String isbn;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "post_id")
+	private List<PostComentario> comentarios = new ArrayList<>();
 
-	@ManyToMany
-	@JoinTable(name = "livro_autor", 
-	joinColumns = @JoinColumn(name = "livro_id"), 
-	inverseJoinColumns = @JoinColumn(name = "autor_id"))
-	private Set<Autor> autores = new HashSet<Autor>();
-
-	public Livro() {
+	public Post() {
 	}
-	
 
-	public Livro(Long id, String titulo, LocalDate dataPublicacao, String isbn) {
+	public Post(Long id, String titulo, String descricao) {
 		this.id = id;
 		this.titulo = titulo;
-		this.dataPublicacao = dataPublicacao;
-		this.isbn = isbn;
+		this.descricao = descricao;
+	}
+
+	public void addComentario(PostComentario comentario) {
+		this.comentarios.add(comentario);
+		comentario.setPost(this);
+	}
+
+	public void removerComentario(PostComentario comentario) {
+		this.comentarios.remove(comentario);
+		comentario.setPost(this);
 	}
 
 	public Long getId() {
@@ -68,24 +70,20 @@ public class Livro implements Serializable {
 		this.titulo = titulo;
 	}
 
-	public LocalDate getDataPublicacao() {
-		return dataPublicacao;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setDataPublicacao(LocalDate dataPublicacao) {
-		this.dataPublicacao = dataPublicacao;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public String getIsbn() {
-		return isbn;
+	public List<PostComentario> getComentarios() {
+		return comentarios;
 	}
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
-
-	public Set<Autor> getAutores() {
-		return autores;
+	public void setComentarios(List<PostComentario> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 	@Override
@@ -104,7 +102,7 @@ public class Livro implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Livro other = (Livro) obj;
+		Post other = (Post) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -115,8 +113,8 @@ public class Livro implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Livro [id=" + id + ", titulo=" + titulo + ", dataPublicacao=" + dataPublicacao + ", isbn=" + isbn
-				+ ", autores=" + autores + "]";
+		return "Post [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", comentarios=" + comentarios
+				+ "]";
 	}
 
 }

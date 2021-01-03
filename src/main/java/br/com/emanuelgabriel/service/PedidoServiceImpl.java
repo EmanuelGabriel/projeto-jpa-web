@@ -29,7 +29,7 @@ public class PedidoServiceImpl implements PedidoRepository {
 		manager.getTransaction().begin();
 		pedido.setDataCriacao(new Date());
 		pedido.setStatus(StatusPedido.ORCAMENTO);
-		manager.merge(pedido);
+		pedido = manager.merge(pedido);
 		manager.getTransaction().commit();
 		manager.close();
 		return pedido;
@@ -58,6 +58,7 @@ public class PedidoServiceImpl implements PedidoRepository {
 			pedido = findByCodigo(pedido.getCodigo());
 			manager.remove(pedido);
 			manager.flush();
+			manager.getTransaction().commit();
 
 		} catch (PersistenceException e) {
 			throw new RegraNegocioException("Pedido não pode ser excluído");

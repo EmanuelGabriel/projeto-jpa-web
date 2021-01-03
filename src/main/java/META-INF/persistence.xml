@@ -23,6 +23,8 @@
 		<class>br.com.emanuelgabriel.model.Veiculo</class>
 		<class>br.com.emanuelgabriel.model.Autor</class>
 		<class>br.com.emanuelgabriel.model.Livro</class>
+		<class>br.com.emanuelgabriel.model.Post</class>
+		<class>br.com.emanuelgabriel.model.PostComentario</class>
 
 
 	   <properties>

@@ -1,20 +1,20 @@
 package br.com.emanuelgabriel.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "autor")
-public class Autor implements Serializable {
+@Table(name = "post_comentario")
+public class PostComentario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,22 +23,21 @@ public class Autor implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 
-	@Column(nullable = false, length = 60)
-	private String nome;
+	@Column(nullable = false, length = 150)
+	private String texto;
 
-	@Column(length = 40)
-	private String sobrenome;
+	@Column(name = "data_comentario", nullable = false)
+	private LocalDate dataComentario;
 
-	@ManyToMany(mappedBy = "autores")
-	private Set<Livro> livros = new HashSet<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Post post;
 
-	public Autor() {
+	public PostComentario() {
 	}
 
-	public Autor(Long id, String nome, String sobrenome) {
-		this.id = id;
-		this.nome = nome;
-		this.sobrenome = sobrenome;
+	public PostComentario(String texto, LocalDate dataComentario) {
+		this.texto = texto;
+		this.dataComentario = dataComentario;
 	}
 
 	public Long getId() {
@@ -49,28 +48,28 @@ public class Autor implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getTexto() {
+		return texto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 
-	public String getSobrenome() {
-		return sobrenome;
+	public LocalDate getDataComentario() {
+		return dataComentario;
 	}
 
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
+	public void setDataComentario(LocalDate dataComentario) {
+		this.dataComentario = dataComentario;
 	}
 
-	public Set<Livro> getLivros() {
-		return livros;
+	public Post getPost() {
+		return post;
 	}
 
-	public void setLivros(Set<Livro> livros) {
-		this.livros = livros;
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class Autor implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Autor other = (Autor) obj;
+		PostComentario other = (PostComentario) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -100,7 +99,7 @@ public class Autor implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Autor [id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + "]";
+		return "PostComentario [id=" + id + ", texto=" + texto + ", dataComentario=" + dataComentario + "]";
 	}
 
 }

@@ -31,7 +31,7 @@ public class TestPesquisaLivro {
 			log.info(NENHUM_REGISTRO_ENCONTRADO);
 		}
 
-		livros.forEach(livro -> log.info(livro));
+		livros.forEach(l -> log.info(l));
 
 	}
 
@@ -40,13 +40,27 @@ public class TestPesquisaLivro {
 
 		log.info("---Busca os Livros pelo seu Título---");
 
-		String tituloLivro = "dois";
+		String tituloLivro = "saud";
 		List<Livro> livros = this.livroDAO.findByTitulo(tituloLivro);
 		if (livros.isEmpty()) {
 			log.warn(NENHUM_REGISTRO_ENCONTRADO);
 		}
 
 		livros.forEach(livro -> log.info(livro));
+
+	}
+
+	@Test
+	public void buscarPorIsbn() {
+		log.info("---Busca livros por seu ISBN---");
+
+		String isbn = "1775623";
+		Livro isbnLivro = this.livroDAO.buscarPorIsbn(isbn);
+		if (isbnLivro == null) {
+			log.warn(NENHUM_REGISTRO_ENCONTRADO);
+		}
+
+		log.info(isbnLivro);
 
 	}
 

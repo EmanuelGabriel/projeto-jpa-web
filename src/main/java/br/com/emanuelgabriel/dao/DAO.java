@@ -11,10 +11,10 @@ import br.com.emanuelgabriel.utils.HibernateUtil;
 public class DAO<T> {
 
 	private final Class<T> classe;
-	private EntityManager em;
+	private EntityManager entityManager;
 
 	public DAO(Class<T> classe) {
-		this.em = HibernateUtil.getEntityManager();
+		this.entityManager = HibernateUtil.getEntityManager();
 		this.classe = classe;
 	}
 
@@ -22,77 +22,80 @@ public class DAO<T> {
 	public void criar(T tipo) {
 
 		// abre a transação
-		em.getTransaction().begin();
+		entityManager.getTransaction().begin();
 
 		// persiste o objeto
-		em.persist(tipo);
+		entityManager.persist(tipo);
 
-		em.getTransaction().commit();
-		em.close();
+		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 
 	public List<T> listarTodos() {
 
-		CriteriaQuery<T> queryType = em.getCriteriaBuilder().createQuery(classe);
+		CriteriaQuery<T> queryType = entityManager.getCriteriaBuilder().createQuery(classe);
 		queryType.select(queryType.from(classe));
 
-		List<T> lista = em.createQuery(queryType).getResultList();
+		List<T> lista = entityManager.createQuery(queryType).getResultList();
 
-		em.close();
 		return lista;
 
 	}
 
-	@Transactional
-	public void atualizar(T tipo) {
-
-		em.getTransaction().begin();
-
-		em.merge(tipo);
-
-		em.getTransaction().commit();
-		em.close();
-	}
-
 	public T buscaPorId(Long id) {
 
-		T instancia = em.find(classe, id);
-		em.close();
+		T instancia = entityManager.find(classe, id);
+		entityManager.close();
 
 		return instancia;
 	}
 
 	@Transactional
+	public void atualizar(T tipo) {
+
+		entityManager.getTransaction().begin();
+
+		entityManager.merge(tipo);
+
+		entityManager.getTransaction().commit();
+		entityManager.close();
+	}
+
+	@Transactional
 	public void remove(T tipo) {
 
-		em.getTransaction().begin();
+		entityManager.getTransaction().begin();
 
-		em.remove(em.merge(tipo));
+		entityManager.remove(entityManager.merge(tipo));
 
-		em.getTransaction().commit();
-		em.close();
+		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 
 	public int contaTodos() {
 
-		long resultado = (Long) em.createQuery("select count(n) from " + classe.getCanonicalName() + " n")
+		long resultado = (Long) entityManager.createQuery("select count(n) from " + classe.getCanonicalName() + " n")
 				.getSingleResult();
-		em.close();
+		entityManager.close();
 
 		return (int) resultado;
 	}
 
 	public List<T> listaTodosPaginada(int primeiroResultado, int maximoResultado) {
 
-		CriteriaQuery<T> queryCriteria = em.getCriteriaBuilder().createQuery(classe);
+		CriteriaQuery<T> queryCriteria = entityManager.getCriteriaBuilder().createQuery(classe);
 		queryCriteria.select(queryCriteria.from(classe));
 
-		List<T> lista = em.createQuery(queryCriteria).setFirstResult(primeiroResultado).setMaxResults(maximoResultado)
-				.getResultList();
+		List<T> lista = entityManager.createQuery(queryCriteria).setFirstResult(primeiroResultado)
+				.setMaxResults(maximoResultado).getResultList();
 
-		em.close();
+		entityManager.close();
 
 		return lista;
+	}
+
+	protected EntityManager getEntityManager() {
+		return entityManager;
 	}
 
 }
